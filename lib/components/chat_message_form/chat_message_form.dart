@@ -31,7 +31,10 @@ class ChatMessageFormComponent extends StatelessWidget {
         ),
       );
 
-  Widget _row() => Row(
+  Widget _row({
+    bool isSending = false,
+  }) =>
+      Row(
         children: [
           Expanded(
             child: _field(null),
@@ -43,13 +46,20 @@ class ChatMessageFormComponent extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   splashColor: Colors.transparent,
-                  onTap: () => context.read<ChatMessageFormBloc>().add(
-                        ChatChatMessageEvent(
-                          content: _messageController.text,
-                          chatId: (stateItem as ChatGroupsItemInitialState)
-                              .itemSelected,
-                        ),
-                      ),
+                  onTap: isSending
+                      ? null
+                      : () {
+                          if (_messageController.text.isNotEmpty) {
+                            context.read<ChatMessageFormBloc>().add(
+                                  ChatChatMessageEvent(
+                                    content: _messageController.text,
+                                    chatId: (stateItem
+                                            as ChatGroupsItemInitialState)
+                                        .itemSelected,
+                                  ),
+                                );
+                          }
+                        },
                   child: Icon(
                     Icons.send,
                     color: kCTAColor,
@@ -61,7 +71,10 @@ class ChatMessageFormComponent extends StatelessWidget {
         ],
       );
 
-  Widget _column() => Column(
+  Widget _column({
+    bool isSending = false,
+  }) =>
+      Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -71,25 +84,30 @@ class ChatMessageFormComponent extends StatelessWidget {
           BlocBuilder<ChatGroupsItemBloc, ChatGroupsItemState>(
             builder: (context, stateItem) =>
                 BlocBuilder<ChatGroupListViewBloc, ChatGroupListViewState>(
-              builder: (context, state) => ElevatedButton(
-                onPressed: () {
-                  if (_messageController.text.isNotEmpty) {
-                    context.read<ChatMessageFormBloc>().add(
-                          ChatChatMessageEvent(
-                            content: _messageController.text,
-                            chatId: (stateItem as ChatGroupsItemInitialState)
-                                .itemSelected,
-                          ),
-                        );
-                  }
-                },
-                child: Text(
-                  "Envoyer".toUpperCase(),
-                  style: TextStyle(
-                    fontSize: kDefaultFontSize,
+              builder: (context, state) {
+                return ElevatedButton(
+                  onPressed: isSending
+                      ? null
+                      : () {
+                          if (_messageController.text.isNotEmpty) {
+                            context.read<ChatMessageFormBloc>().add(
+                                  ChatChatMessageEvent(
+                                    content: _messageController.text,
+                                    chatId: (stateItem
+                                            as ChatGroupsItemInitialState)
+                                        .itemSelected,
+                                  ),
+                                );
+                          }
+                        },
+                  child: Text(
+                    "Envoyer".toUpperCase(),
+                    style: TextStyle(
+                      fontSize: kDefaultFontSize,
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ],
@@ -103,24 +121,32 @@ class ChatMessageFormComponent extends StatelessWidget {
           _messageController.text = "";
         }
       },
-      builder: (context, state) => Container(
-        height: Responsive.isMobile(context) ? null : 140,
-        padding: const EdgeInsets.all(
-          kDefaultPadding / 2,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            color: kSecondaryColor,
+      builder: (context, state) {
+        return Container(
+          height: Responsive.isMobile(context) ? null : 140,
+          padding: const EdgeInsets.all(
+            kDefaultPadding / 2,
           ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              kDefaultPadding / 2,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              color: kSecondaryColor,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                kDefaultPadding / 2,
+              ),
             ),
           ),
-        ),
-        child: Responsive.isMobile(context) ? _row() : _column(),
-      ),
+          child: Responsive.isMobile(context)
+              ? _row(
+                  isSending: state is ChatMessageFormChatingState,
+                )
+              : _column(
+                  isSending: state is ChatMessageFormChatingState,
+                ),
+        );
+      },
     );
   }
 }

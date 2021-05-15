@@ -22,8 +22,6 @@ class ChatMessageFormBloc
     if (event is ChatChatMessageEvent) {
       yield ChatMessageFormChatingState();
 
-      await Future.delayed(Duration(seconds: 2));
-
       await _messagingRepository.sendMessage(
         event.content,
         event.chatId,

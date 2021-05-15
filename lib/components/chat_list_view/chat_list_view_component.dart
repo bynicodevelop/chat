@@ -1,6 +1,7 @@
 import 'package:chat/components/chat_list_view/bloc/chat_list_view_bloc.dart';
 import 'package:chat/components/chat_message_form/chat_message_form.dart';
 import 'package:chat/config/constants.dart';
+import 'package:chat/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -135,24 +136,29 @@ class ChatListViewComponent extends StatelessWidget {
 
           return Stack(
             children: [
-              ListView.builder(
-                controller: _scrollController,
-                itemCount: state.messages.length,
-                itemBuilder: (context, index) {
-                  if (!state.messages[index].isMe) {
-                    return _from(
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: Responsive.isMobile(context) ? 80 : 150,
+                ),
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: state.messages.length,
+                  itemBuilder: (context, index) {
+                    if (!state.messages[index].isMe) {
+                      return _from(
+                        state.messages[index].content,
+                        state.messages[index].profileModel.photoURL,
+                        index > 1 && !state.messages[index - 1].isMe,
+                      );
+                    }
+
+                    return _me(
                       state.messages[index].content,
                       state.messages[index].profileModel.photoURL,
-                      index > 1 && !state.messages[index - 1].isMe,
+                      index > 1 && state.messages[index - 1].isMe,
                     );
-                  }
-
-                  return _me(
-                    state.messages[index].content,
-                    state.messages[index].profileModel.photoURL,
-                    index > 1 && state.messages[index - 1].isMe,
-                  );
-                },
+                  },
+                ),
               ),
               Positioned(
                 left: 0,
