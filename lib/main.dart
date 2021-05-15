@@ -50,7 +50,7 @@ void main() async {
     host: host,
     sslEnabled: false,
     // TODO: A supprimer
-    // persistenceEnabled: false,
+    persistenceEnabled: false,
   );
 
   runApp(App(

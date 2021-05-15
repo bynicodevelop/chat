@@ -133,7 +133,6 @@ exports.setSponsor = functions.https.onCall(async (data, context) => {
     .limit(1)
     .get();
 
-  console.log(sponsor.docs);
   if (sponsor.docs.length == 0) {
     throw new functions.https.HttpsError("not-found");
   }

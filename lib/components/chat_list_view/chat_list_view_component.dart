@@ -116,12 +116,8 @@ class ChatListViewComponent extends StatelessWidget {
         right: kDefaultPadding,
         top: kDefaultPadding,
       ),
-      child: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 150,
-        ),
-        child: BlocConsumer<ChatListViewBloc, ChatListViewState>(
-            listener: (context, state) {
+      child: BlocConsumer<ChatListViewBloc, ChatListViewState>(
+        listener: (context, state) {
           if (state is ChatListViewInitialState) {
             WidgetsBinding.instance!.addPostFrameCallback((_) {
               _scrollController.jumpTo(
@@ -129,42 +125,45 @@ class ChatListViewComponent extends StatelessWidget {
               );
             });
           }
-        }, builder: (context, state) {
+        },
+        builder: (context, state) {
           if ((state as ChatListViewInitialState).messages.length == 0) {
             return Center(
               child: Text("Créez une discussion"),
             );
           }
 
-          return Stack(children: [
-            ListView.builder(
-              controller: _scrollController,
-              itemCount: state.messages.length,
-              itemBuilder: (context, index) {
-                if (!state.messages[index].isMe) {
-                  return _from(
+          return Stack(
+            children: [
+              ListView.builder(
+                controller: _scrollController,
+                itemCount: state.messages.length,
+                itemBuilder: (context, index) {
+                  if (!state.messages[index].isMe) {
+                    return _from(
+                      state.messages[index].content,
+                      state.messages[index].profileModel.photoURL,
+                      index > 1 && !state.messages[index - 1].isMe,
+                    );
+                  }
+
+                  return _me(
                     state.messages[index].content,
                     state.messages[index].profileModel.photoURL,
-                    index > 1 && !state.messages[index - 1].isMe,
+                    index > 1 && state.messages[index - 1].isMe,
                   );
-                }
-
-                return _me(
-                  state.messages[index].content,
-                  state.messages[index].profileModel.photoURL,
-                  index > 1 && state.messages[index - 1].isMe,
-                );
-              },
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: MediaQuery.of(context).viewInsets.bottom +
-                  kDefaultPadding / 2,
-              child: ChatMessageFormComponent(),
-            ),
-          ]);
-        }),
+                },
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: MediaQuery.of(context).viewInsets.bottom +
+                    kDefaultPadding / 2,
+                child: ChatMessageFormComponent(),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
