@@ -72,13 +72,17 @@ class ChatMessageFormComponent extends StatelessWidget {
             builder: (context, stateItem) =>
                 BlocBuilder<ChatGroupListViewBloc, ChatGroupListViewState>(
               builder: (context, state) => ElevatedButton(
-                onPressed: () => context.read<ChatMessageFormBloc>().add(
-                      ChatChatMessageEvent(
-                        content: _messageController.text,
-                        chatId: (stateItem as ChatGroupsItemInitialState)
-                            .itemSelected,
-                      ),
-                    ),
+                onPressed: () {
+                  if (_messageController.text.isNotEmpty) {
+                    context.read<ChatMessageFormBloc>().add(
+                          ChatChatMessageEvent(
+                            content: _messageController.text,
+                            chatId: (stateItem as ChatGroupsItemInitialState)
+                                .itemSelected,
+                          ),
+                        );
+                  }
+                },
                 child: Text(
                   "Envoyer".toUpperCase(),
                   style: TextStyle(
