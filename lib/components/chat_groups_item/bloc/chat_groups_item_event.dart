@@ -8,9 +8,9 @@ abstract class ChatGroupsItemEvent extends Equatable {
 }
 
 class ChatGroupsItemSelectedEvent extends ChatGroupsItemEvent {
-  final String itemSelected;
+  final GroupModel groupModelSelected;
 
   ChatGroupsItemSelectedEvent({
-    required this.itemSelected,
+    required this.groupModelSelected,
   });
 }

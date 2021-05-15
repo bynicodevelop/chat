@@ -13,7 +13,6 @@ import 'package:chat/repositories/abstracts/profile.dart';
 import 'package:chat/repositories/authentication_impl.dart';
 import 'package:chat/repositories/messaging_impl.dart';
 import 'package:chat/repositories/profile_impl.dart';
-import 'package:chat/screens/auth/signin_screen.dart';
 import 'package:chat/screens/auth/signup_screen.dart';
 import 'package:chat/screens/home/home_screen.dart';
 import 'package:chat/services/authentication/authentication_bloc.dart';

@@ -16,10 +16,15 @@ class MobileResponsiveScreen extends StatelessWidget {
     return Scaffold(
       appBar: Responsive.isMobile(context)
           ? AppBar(
-              title: Text((kNavigation[(context.watch<PageViewBloc>().state
-                          as PageViewInitialState)
-                      .indexSelected]["label"]! as String)
-                  .firstCapitalized()),
+              title: Text(
+                (kNavigation[(context.watch<PageViewBloc>().state
+                            as PageViewInitialState)
+                        .indexSelected]["label"]! as String)
+                    .firstCapitalized(),
+                style: Theme.of(context).appBarTheme.titleTextStyle,
+              ),
+              actionsIconTheme: Theme.of(context).appBarTheme.actionsIconTheme,
+              iconTheme: Theme.of(context).appBarTheme.iconTheme,
             )
           : null,
       body: SafeArea(

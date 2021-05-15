@@ -19,12 +19,7 @@ class ChatDesktopLayout extends StatelessWidget {
         ),
         Expanded(
           flex: 9,
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: kDefaultPadding * 5,
-            ),
-            child: ChatListViewComponent(),
-          ),
+          child: ChatListViewComponent(),
         )
       ],
     );

@@ -1,6 +1,5 @@
 import 'package:chat/components/chat_groups_item/bloc/chat_groups_item_bloc.dart';
 import 'package:chat/components/chat_list_view/bloc/chat_list_view_bloc.dart';
-import 'package:chat/components/profile_avatar/profile_avatar_component.dart';
 import 'package:chat/config/constants.dart';
 import 'package:chat/repositories/models/group_model.dart';
 import 'package:chat/responsive.dart';
@@ -49,12 +48,13 @@ class ChatGroupsItemComponent extends StatelessWidget {
               onTap: () {
                 context.read<ChatListViewBloc>().add(
                       ChatListViewInitializeEvent(
-                        chatId: groupModel.channelId,
+                        groupModel: groupModel,
                       ),
                     );
+
                 context.read<ChatGroupsItemBloc>().add(
                       ChatGroupsItemSelectedEvent(
-                        itemSelected: groupModel.channelId,
+                        groupModelSelected: groupModel,
                       ),
                     );
 

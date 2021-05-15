@@ -27,13 +27,13 @@ class ChatGroupsListViewComponent extends StatelessWidget {
 
           context.read<ChatListViewBloc>().add(
                 ChatListViewInitializeEvent(
-                  chatId: groupModel.channelId,
+                  groupModel: groupModel,
                 ),
               );
 
           context.read<ChatGroupsItemBloc>().add(
                 ChatGroupsItemSelectedEvent(
-                  itemSelected: groupModel.channelId,
+                  groupModelSelected: groupModel,
                 ),
               );
         }

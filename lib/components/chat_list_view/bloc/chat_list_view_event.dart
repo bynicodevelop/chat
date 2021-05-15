@@ -8,9 +8,9 @@ abstract class ChatListViewEvent extends Equatable {
 }
 
 class ChatListViewInitializeEvent extends ChatListViewEvent {
-  final String chatId;
+  final GroupModel groupModel;
 
   ChatListViewInitializeEvent({
-    required this.chatId,
+    required this.groupModel,
   });
 }

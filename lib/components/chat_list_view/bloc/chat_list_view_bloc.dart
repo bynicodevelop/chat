@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:chat/repositories/abstracts/messaging.dart';
+import 'package:chat/repositories/models/group_model.dart';
 import 'package:chat/repositories/models/message_model.dart';
+import 'package:chat/repositories/models/profile_model.dart';
 import 'package:equatable/equatable.dart';
 
 part 'chat_list_view_event.dart';
@@ -20,11 +22,13 @@ class ChatListViewBloc extends Bloc<ChatListViewEvent, ChatListViewState> {
     ChatListViewEvent event,
   ) async* {
     if (event is ChatListViewInitializeEvent) {
-      List<MessageModel> messages =
-          await _messagingRepository.messagesbyGroupId(event.chatId).first;
+      List<MessageModel> messages = await _messagingRepository
+          .messagesbyGroupId(event.groupModel.channelId)
+          .first;
 
       yield ChatListViewInitialState(
         messages: messages,
+        members: event.groupModel.members,
       );
     }
   }

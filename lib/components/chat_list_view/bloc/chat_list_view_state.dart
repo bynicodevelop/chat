@@ -9,11 +9,13 @@ abstract class ChatListViewState extends Equatable {
 
 class ChatListViewInitialState extends ChatListViewState {
   final List<MessageModel> messages;
+  final List<ProfileModel> members;
 
   ChatListViewInitialState({
     this.messages = const <MessageModel>[],
+    this.members = const <ProfileModel>[],
   });
 
   @override
-  List<Object> get props => [messages];
+  List<Object> get props => [messages, members];
 }

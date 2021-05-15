@@ -11,7 +11,6 @@ import 'package:chat/services/authentication/authentication_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:universal_platform/universal_platform.dart';
 
 class ProfileFormPersonalDataComponent extends StatelessWidget {
   const ProfileFormPersonalDataComponent({Key? key}) : super(key: key);

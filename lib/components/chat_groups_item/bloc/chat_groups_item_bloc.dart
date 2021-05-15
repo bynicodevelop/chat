@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:chat/repositories/models/group_model.dart';
 import 'package:equatable/equatable.dart';
 
 part 'chat_groups_item_event.dart';
@@ -16,7 +17,7 @@ class ChatGroupsItemBloc
   ) async* {
     if (event is ChatGroupsItemSelectedEvent) {
       yield ChatGroupsItemInitialState(
-        itemSelected: event.itemSelected,
+        itemSelected: event.groupModelSelected.channelId,
       );
     }
   }

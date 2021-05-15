@@ -2,6 +2,7 @@ import 'package:chat/components/chat_list_view/bloc/chat_list_view_bloc.dart';
 import 'package:chat/components/chat_message_form/chat_message_form.dart';
 import 'package:chat/config/constants.dart';
 import 'package:chat/responsive.dart';
+import 'package:chat/widgets/chat_header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -66,7 +67,7 @@ class ChatListViewComponent extends StatelessWidget {
     Color backgroundColor,
   ) =>
       Padding(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           vertical: kDefaultPadding / 3,
           horizontal: kDefaultPadding / 5,
         ),
@@ -109,68 +110,84 @@ class ChatListViewComponent extends StatelessWidget {
         ),
       );
 
+  Widget _noDiscussion() => Center(
+        child: Text("Créez une discussion"),
+      );
+
+  Widget _messaginStack(BuildContext context, state) => Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: Responsive.isMobile(context) ? 80 : 150,
+            ),
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(
+                vertical: kDefaultPadding / 2,
+                // horizontal: kDefaultPadding * 3,
+              ),
+              controller: _scrollController,
+              itemCount: state.messages.length,
+              itemBuilder: (context, index) {
+                if (!state.messages[index].isMe) {
+                  return _from(
+                    state.messages[index].content,
+                    state.messages[index].profileModel.photoURL,
+                    index > 1 && !state.messages[index - 1].isMe,
+                  );
+                }
+
+                return _me(
+                  state.messages[index].content,
+                  state.messages[index].profileModel.photoURL,
+                  index > 1 && state.messages[index - 1].isMe,
+                );
+              },
+            ),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom:
+                MediaQuery.of(context).viewInsets.bottom + kDefaultPadding / 2,
+            child: ChatMessageFormComponent(),
+          ),
+        ],
+      );
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(
-        left: kDefaultPadding,
-        right: kDefaultPadding,
-        top: kDefaultPadding,
-      ),
-      child: BlocConsumer<ChatListViewBloc, ChatListViewState>(
-        listener: (context, state) {
-          if (state is ChatListViewInitialState) {
-            WidgetsBinding.instance!.addPostFrameCallback((_) {
-              _scrollController.jumpTo(
-                _scrollController.position.maxScrollExtent,
-              );
-            });
-          }
-        },
-        builder: (context, state) {
-          if ((state as ChatListViewInitialState).messages.length == 0) {
-            return Center(
-              child: Text("Créez une discussion"),
+    return BlocConsumer<ChatListViewBloc, ChatListViewState>(
+      listener: (context, state) {
+        if (state is ChatListViewInitialState) {
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
+            _scrollController.jumpTo(
+              _scrollController.position.maxScrollExtent,
             );
-          }
-
-          return Stack(
+          });
+        }
+      },
+      builder: (context, state) {
+        return ClipRRect(
+          child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  bottom: Responsive.isMobile(context) ? 80 : 150,
+              // In Widget Directory
+              ChatHeaderWidget(),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    left: kDefaultPadding,
+                    right: kDefaultPadding,
+                  ),
+                  child:
+                      (state as ChatListViewInitialState).messages.length == 0
+                          ? _noDiscussion()
+                          : _messaginStack(context, state),
                 ),
-                child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: state.messages.length,
-                  itemBuilder: (context, index) {
-                    if (!state.messages[index].isMe) {
-                      return _from(
-                        state.messages[index].content,
-                        state.messages[index].profileModel.photoURL,
-                        index > 1 && !state.messages[index - 1].isMe,
-                      );
-                    }
-
-                    return _me(
-                      state.messages[index].content,
-                      state.messages[index].profileModel.photoURL,
-                      index > 1 && state.messages[index - 1].isMe,
-                    );
-                  },
-                ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: MediaQuery.of(context).viewInsets.bottom +
-                    kDefaultPadding / 2,
-                child: ChatMessageFormComponent(),
-              ),
+              )
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

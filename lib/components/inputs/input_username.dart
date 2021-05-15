@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
+// ignore: must_be_immutable
 class InputUsername extends StatefulWidget implements InputAbstract {
   final String placeholder;
 

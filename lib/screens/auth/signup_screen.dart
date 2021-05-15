@@ -3,7 +3,6 @@ import 'package:chat/components/inputs/input_button.dart';
 import 'package:chat/components/inputs/input_email.dart';
 import 'package:chat/components/inputs/input_form.dart';
 import 'package:chat/components/inputs/input_password.dart';
-import 'package:chat/components/inputs/input_username.dart';
 import 'package:chat/config/constants.dart';
 import 'package:chat/responsive.dart';
 import 'package:chat/screens/auth/forgotten_screen.dart';

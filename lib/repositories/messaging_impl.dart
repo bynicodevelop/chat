@@ -42,12 +42,26 @@ class MessagingImplRepository extends MessagingRepository {
                   .collection(USERS)
                   .doc(e.data()["recentMessage"]["sendBy"])
                   .get();
+
               return GroupModel(
                 channelId: e.id,
                 avatar: userDocumentSnapshot.get("photoURL"),
                 username: userDocumentSnapshot.get("displayName"),
                 content: e.data()["recentMessage"]["content"],
                 lastUpdated: e.data()["recentMessage"]["updatedAt"],
+                members: await Future.wait(
+                  List<String>.from(e.data()["members"]).map((String id) async {
+                    DocumentSnapshot userDoc =
+                        await _firestore.collection(USERS).doc(id).get();
+
+                    return ProfileModel(
+                      uid: userDoc.id,
+                      photoURL: userDoc.get("photoURL"),
+                      displayName: userDoc.get("displayName"),
+                      isMe: _auth.currentUser!.uid == userDoc.id,
+                    );
+                  }),
+                ),
               );
             },
           ));
