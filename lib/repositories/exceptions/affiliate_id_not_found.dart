@@ -1,0 +1,1 @@
+class AffiliateIdNotFound implements Exception {}
