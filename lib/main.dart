@@ -1,7 +1,9 @@
-import 'package:chat/components/chat_groups_item/bloc/chat_groups_item_bloc.dart';
-import 'package:chat/components/chat_groups_list_view/bloc/chat_group_list_view_bloc.dart';
+import 'package:chat/components/chat_accept_contact/bloc/chat_accept_contact_bloc.dart';
 import 'package:chat/components/chat_list_view/bloc/chat_list_view_bloc.dart';
 import 'package:chat/components/chat_message_form/bloc/chat_message_form_bloc.dart';
+import 'package:chat/components/discussions/item/bloc/discussion_item_bloc.dart';
+import 'package:chat/components/discussions/list/bloc/discussion_list_bloc.dart';
+import 'package:chat/components/discussions/tabs/bloc/tabs_bloc.dart';
 import 'package:chat/components/profile_avatar/bloc/profile_avatar_bloc.dart';
 import 'package:chat/components/profile_display_name/bloc/profile_display_name_bloc.dart';
 import 'package:chat/components/profile_form_personal_data/bloc/profile_form_personal_data_bloc.dart';
@@ -16,6 +18,7 @@ import 'package:chat/repositories/profile_impl.dart';
 import 'package:chat/screens/auth/signup_screen.dart';
 import 'package:chat/screens/home/home_screen.dart';
 import 'package:chat/services/authentication/authentication_bloc.dart';
+import 'package:chat/services/discussion/discussion_bloc.dart';
 import 'package:chat/services/pageview/pageview_bloc.dart';
 import 'package:chat/services/profile/profile_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -97,8 +100,8 @@ class App extends StatelessWidget {
       firestore,
     );
 
-    ChatGroupListViewBloc messagesItemsBloc =
-        ChatGroupListViewBloc(messagingRepository);
+    DiscussionListBloc messagesItemsBloc =
+        DiscussionListBloc(messagingRepository);
 
     return MultiBlocProvider(
       providers: [
@@ -116,7 +119,7 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => messagesItemsBloc
             ..add(
-              ChatGroupListViewInitializeEvent(),
+              DiscussionListInitializeEvent(),
             ),
         ),
         BlocProvider(
@@ -126,7 +129,7 @@ class App extends StatelessWidget {
           create: (context) => ChatListViewBloc(messagingRepository),
         ),
         BlocProvider(
-          create: (context) => ChatGroupsItemBloc(),
+          create: (context) => DiscussionItemBloc(),
         ),
         BlocProvider(
           create: (context) => ProfileUpdateImageBloc(profileRepository),
@@ -136,6 +139,15 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ProfileDisplayNameBloc(),
+        ),
+        BlocProvider(
+          create: (context) => TabsBloc(),
+        ),
+        BlocProvider(
+          create: (context) => DiscussionBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ChatAcceptContactBloc(messagingRepository),
         ),
         BlocProvider(
           create: (context) => ProfileFormPersonalDataBloc(profileRepository)

@@ -53,9 +53,10 @@ class ChatHeaderWidget extends StatelessWidget {
                     right: kDefaultPadding / 3,
                   ),
                   child: CircleAvatar(
-                    backgroundImage: hasMessage
-                        ? NetworkImage(profileModel!.photoURL)
-                        : null,
+                    backgroundImage:
+                        hasMessage && profileModel!.photoURL.isNotEmpty
+                            ? NetworkImage(profileModel.photoURL)
+                            : null,
                   ),
                 ),
                 Column(

@@ -1,4 +1,5 @@
 import 'package:chat/components/chat_list_view/bloc/chat_list_view_bloc.dart';
+import 'package:chat/components/chat_message_form/bloc/chat_message_form_bloc.dart';
 import 'package:chat/components/chat_message_form/chat_message_form.dart';
 import 'package:chat/config/constants.dart';
 import 'package:chat/responsive.dart';
@@ -25,7 +26,8 @@ class ChatListViewComponent extends StatelessWidget {
             radius: 15.0,
             backgroundColor:
                 isSameUser ? Colors.transparent : kDefaultBackgroundColor,
-            backgroundImage: NetworkImage(photoURL),
+            backgroundImage:
+                photoURL.isNotEmpty ? NetworkImage(photoURL) : null,
           ),
           _bubble(
             content,
@@ -55,7 +57,8 @@ class ChatListViewComponent extends StatelessWidget {
             radius: 15.0,
             backgroundColor:
                 isSameUser ? Colors.transparent : kDefaultBackgroundColor,
-            backgroundImage: NetworkImage(photoURL),
+            backgroundImage:
+                photoURL.isNotEmpty ? NetworkImage(photoURL) : null,
           ),
         ],
       );
@@ -110,8 +113,22 @@ class ChatListViewComponent extends StatelessWidget {
         ),
       );
 
-  Widget _noDiscussion() => Center(
-        child: Text("Créez une discussion"),
+  Widget _noDiscussion(BuildContext context, state) => Stack(
+        children: [
+          Center(
+            child: Text("Envoyez votre premier message..."),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom:
+                MediaQuery.of(context).viewInsets.bottom + kDefaultPadding / 2,
+            child: ChatMessageFormComponent(
+              status: (state as ChatListViewInitialState).status,
+              groupId: state.groupId,
+            ),
+          ),
+        ],
       );
 
   Widget _messaginStack(BuildContext context, state) => Stack(
@@ -149,7 +166,10 @@ class ChatListViewComponent extends StatelessWidget {
             right: 0,
             bottom:
                 MediaQuery.of(context).viewInsets.bottom + kDefaultPadding / 2,
-            child: ChatMessageFormComponent(),
+            child: ChatMessageFormComponent(
+              status: (state as ChatListViewInitialState).status,
+              groupId: state.groupId,
+            ),
           ),
         ],
       );
@@ -178,10 +198,9 @@ class ChatListViewComponent extends StatelessWidget {
                     left: kDefaultPadding,
                     right: kDefaultPadding,
                   ),
-                  child:
-                      (state as ChatListViewInitialState).messages.length == 0
-                          ? _noDiscussion()
-                          : _messaginStack(context, state),
+                  child: (state as ChatListViewInitialState).isFirstContact
+                      ? _noDiscussion(context, state)
+                      : _messaginStack(context, state),
                 ),
               )
             ],

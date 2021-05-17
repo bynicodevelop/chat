@@ -7,8 +7,10 @@ class GroupModel {
   final String content;
   final int lastUpdated;
   final List<ProfileModel> members;
+  final String status;
 
   bool selected;
+  bool isFirstContact;
 
   GroupModel({
     required this.channelId,
@@ -17,7 +19,9 @@ class GroupModel {
     required this.content,
     required this.lastUpdated,
     required this.members,
+    required this.status,
     this.selected = false,
+    this.isFirstContact = false,
   });
 
   Map<String, dynamic> toJson() => {

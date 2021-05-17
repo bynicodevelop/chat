@@ -14,3 +14,13 @@ class ChatListViewInitializeEvent extends ChatListViewEvent {
     required this.groupModel,
   });
 }
+
+class _ChatListViewInitializeEvent extends ChatListViewEvent {
+  final List<MessageModel> messages;
+  final GroupModel groupModel;
+
+  _ChatListViewInitializeEvent({
+    required this.messages,
+    required this.groupModel,
+  });
+}

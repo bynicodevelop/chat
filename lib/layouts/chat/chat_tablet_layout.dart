@@ -1,5 +1,5 @@
-import 'package:chat/components/chat_groups_list_view/chat_groups_list_view_component.dart';
 import 'package:chat/components/chat_list_view/chat_list_view_component.dart';
+import 'package:chat/components/discussions/list/discussion_list_component.dart';
 import 'package:chat/widgets/tablet_drawer_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class ChatTabletLayout extends StatelessWidget {
           flex: 4,
           child: TabletDraweWidget(
             drawerKey: drawerKey,
-            child: ChatGroupsListViewComponent(),
+            child: DiscussionListComponent(),
           ),
         ),
         Expanded(

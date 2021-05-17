@@ -1,4 +1,4 @@
-import 'package:chat/components/chat_groups_list_view/chat_groups_list_view_component.dart';
+import 'package:chat/components/discussions/list/discussion_list_component.dart';
 import 'package:flutter/material.dart';
 
 class ChatMobileLayout extends StatelessWidget {
@@ -6,6 +6,6 @@ class ChatMobileLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChatGroupsListViewComponent();
+    return DiscussionListComponent();
   }
 }

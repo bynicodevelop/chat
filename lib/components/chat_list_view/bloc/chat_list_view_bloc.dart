@@ -22,13 +22,19 @@ class ChatListViewBloc extends Bloc<ChatListViewEvent, ChatListViewState> {
     ChatListViewEvent event,
   ) async* {
     if (event is ChatListViewInitializeEvent) {
-      List<MessageModel> messages = await _messagingRepository
-          .messagesbyGroupId(event.groupModel.channelId)
-          .first;
-
+      _messagingRepository.messagesbyGroupId(event.groupModel.channelId).listen(
+        (messages) {
+          add(_ChatListViewInitializeEvent(
+              messages: messages, groupModel: event.groupModel));
+        },
+      );
+    } else if (event is _ChatListViewInitializeEvent) {
       yield ChatListViewInitialState(
-        messages: messages,
+        messages: event.messages,
         members: event.groupModel.members,
+        groupId: event.groupModel.channelId,
+        status: event.groupModel.status,
+        isFirstContact: event.groupModel.isFirstContact,
       );
     }
   }

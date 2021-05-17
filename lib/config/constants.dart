@@ -6,15 +6,16 @@ final kNavigation = [
     "label": "messages",
     "index": 0,
   },
-  // {
-  //   "icon": Icons.group,
-  //   "label": "contacts",
-  // },
   {
     "icon": Icons.person,
     "label": "profile",
     "index": 1,
-  }
+  },
+  {
+    "icon": Icons.group,
+    "label": "contacts",
+    "index": 2,
+  },
 ];
 
 final kProfileNavigation = [

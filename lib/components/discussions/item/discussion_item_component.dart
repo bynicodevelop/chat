@@ -1,5 +1,5 @@
-import 'package:chat/components/chat_groups_item/bloc/chat_groups_item_bloc.dart';
 import 'package:chat/components/chat_list_view/bloc/chat_list_view_bloc.dart';
+import 'package:chat/components/discussions/item/bloc/discussion_item_bloc.dart';
 import 'package:chat/config/constants.dart';
 import 'package:chat/repositories/models/group_model.dart';
 import 'package:chat/responsive.dart';
@@ -7,23 +7,23 @@ import 'package:chat/screens/chat/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ChatGroupsItemComponent extends StatelessWidget {
+class DiscussionItemComponent extends StatelessWidget {
   final GroupModel groupModel;
 
-  const ChatGroupsItemComponent({
+  const DiscussionItemComponent({
     Key? key,
     required this.groupModel,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChatGroupsItemBloc, ChatGroupsItemState>(
+    return BlocBuilder<DiscussionItemBloc, DiscussionItemState>(
       builder: (context, state) {
         return Container(
           decoration: BoxDecoration(
             border: Border(
               left: BorderSide(
-                color: (state as ChatGroupsItemInitialState).itemSelected ==
+                color: (state as DiscussionItemInitialState).itemSelected ==
                             groupModel.channelId &&
                         !Responsive.isMobile(context)
                     ? kCTAColor
@@ -39,9 +39,11 @@ class ChatGroupsItemComponent extends StatelessWidget {
                     ? NetworkImage(groupModel.avatar)
                     : null,
               ),
-              title: Text(groupModel.username),
+              title: Text(groupModel.username.toUpperCase()),
               subtitle: Text(
-                groupModel.content,
+                groupModel.content.isEmpty
+                    ? "Ecrivez votre premier message"
+                    : groupModel.content,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -52,8 +54,8 @@ class ChatGroupsItemComponent extends StatelessWidget {
                       ),
                     );
 
-                context.read<ChatGroupsItemBloc>().add(
-                      ChatGroupsItemSelectedEvent(
+                context.read<DiscussionItemBloc>().add(
+                      DiscussionItemSelectedEvent(
                         groupModelSelected: groupModel,
                       ),
                     );

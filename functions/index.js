@@ -5,6 +5,8 @@ const _ = require("lodash");
 
 const populate = require("./populate");
 
+const dayjs = require("dayjs");
+
 admin.initializeApp();
 
 const COLLECTIONS = {
@@ -28,7 +30,7 @@ exports.populate = functions.https.onRequest(async (request, response) => {
   });
 
   const listOfGroups = populate.users
-    .map((user) => user.membersId.map((id) => [user.uid, id]))
+    .map((user) => user.membersId.map((id) => [{ id: user.uid }, id]))
     .flat();
 
   populate.groups(listOfGroups.length, 10).forEach(async (groups, index) => {
@@ -36,8 +38,9 @@ exports.populate = functions.https.onRequest(async (request, response) => {
 
     const documentReference = await groupRef.add({
       createdAt,
-      members: listOfGroups[index],
-      createdBy: listOfGroups[index][0],
+      members: [listOfGroups[index][0]["id"], listOfGroups[index][1]["id"]],
+      createdBy: listOfGroups[index][0]["id"],
+      asked: listOfGroups[index][1]["status"],
     });
 
     const orderedMessages = messages.sort((a, b) => a["sentAt"] - b["sentAt"]);
@@ -48,7 +51,7 @@ exports.populate = functions.https.onRequest(async (request, response) => {
       const sendBy = listOfGroups[index]
         .map((x) => ({ x, r: Math.random() }))
         .sort((a, b) => a.r - b.r)
-        .map((a) => a.x)
+        .map((a) => a.x["id"])
         .slice(0, 1)[0];
 
       await documentReference
@@ -149,6 +152,14 @@ exports.setSponsor = functions.https.onCall(async (data, context) => {
       .set({
         userRef: userRef.doc(context.auth.uid),
       });
+
+    const documentReference = await groupRef.add({
+      createdAt: dayjs().unix(),
+      members: [context.auth.uid, sponsor.docs[0].id],
+      createdBy: context.auth.uid,
+      asked: "waiting",
+      recentMessage: { updatedAt: dayjs().unix() },
+    });
   } catch (error) {
     console.log("Connot update sponsor affiliate");
     console.log(error);

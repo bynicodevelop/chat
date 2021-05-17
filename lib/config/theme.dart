@@ -6,6 +6,9 @@ class CustomTheme {
     var theme = Theme.of(context);
 
     return theme.copyWith(
+      tabBarTheme: theme.tabBarTheme.copyWith(
+        labelColor: kDefautFontColor,
+      ),
       appBarTheme: theme.appBarTheme.copyWith(
         actionsIconTheme: IconThemeData(
           color: kDefautFontColor,
@@ -21,6 +24,9 @@ class CustomTheme {
       textTheme: theme.textTheme.copyWith(
         headline1: theme.textTheme.headline1!.copyWith(
           fontSize: kDefaultFontSize * 4,
+        ),
+        headline2: theme.textTheme.headline2!.copyWith(
+          fontSize: kDefaultFontSize * 1.5,
         ),
         bodyText1: theme.textTheme.bodyText1!.copyWith(
           fontSize: kDefaultFontSize,

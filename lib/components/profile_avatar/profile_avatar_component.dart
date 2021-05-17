@@ -21,9 +21,11 @@ class _ProfileAvatarComponentState extends State<ProfileAvatarComponent> {
   void initState() {
     super.initState();
 
-    context
-        .read<ProfileAvatarBloc>()
-        .add(ProfileAvatarRefreshEvent(photoURL: widget.photoURL));
+    context.read<ProfileAvatarBloc>().add(
+          ProfileAvatarRefreshEvent(
+            photoURL: widget.photoURL,
+          ),
+        );
   }
 
   @override
