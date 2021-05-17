@@ -1,6 +1,8 @@
 part of 'authentication_bloc.dart';
 
 enum UnAuthenticatedStatus {
+  none,
+  authenticated,
   unauthenticated,
   logout,
   invalidEmail,
@@ -27,6 +29,18 @@ class UnAuthenticatedState extends AuthenticationState {
   UnAuthenticatedState({
     this.unAuthenticatedStatus = UnAuthenticatedStatus.unauthenticated,
   });
+
+  @override
+  List<Object> get props => [unAuthenticatedStatus];
 }
 
-class AuthenticatedState extends AuthenticationState {}
+class AuthenticatedState extends AuthenticationState {
+  final UnAuthenticatedStatus unAuthenticatedStatus;
+
+  AuthenticatedState({
+    this.unAuthenticatedStatus = UnAuthenticatedStatus.none,
+  });
+
+  @override
+  List<Object> get props => [unAuthenticatedStatus];
+}

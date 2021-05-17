@@ -61,7 +61,9 @@ class AuthenticationBloc
         return;
       }
 
-      yield AuthenticatedState();
+      yield AuthenticatedState(
+        unAuthenticatedStatus: UnAuthenticatedStatus.authenticated,
+      );
     } else if (event is AuthenticationSignUpEvent) {
       yield AuthenticationInitialState();
 
@@ -109,7 +111,9 @@ class AuthenticationBloc
         return;
       }
 
-      yield AuthenticatedState();
+      yield AuthenticatedState(
+        unAuthenticatedStatus: UnAuthenticatedStatus.authenticated,
+      );
     } else if (event is AuthenticationResetPasswordEvent) {
       yield AuthenticationInitialState();
 

@@ -7,6 +7,7 @@ import 'package:chat/config/constants.dart';
 import 'package:chat/responsive.dart';
 import 'package:chat/screens/auth/forgotten_screen.dart';
 import 'package:chat/screens/auth/signin_screen.dart';
+import 'package:chat/screens/home/home_screen.dart';
 import 'package:chat/services/authentication/authentication_bloc.dart';
 import 'package:chat/transitions/no_animation_material_page_route.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,21 @@ class SignUpScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            BlocConsumer<AuthenticationBloc, AuthenticationState>(
+              listener: (context, state) {
+                if (state is AuthenticatedState) {
+                  if (state.unAuthenticatedStatus ==
+                      UnAuthenticatedStatus.authenticated) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  }
+                }
+              },
               builder: (context, state) {
                 if (state is UnAuthenticatedState) {
                   return Column(
